@@ -874,8 +874,8 @@ Initial routes:
 
 ### 89. Deploy the Application
 
-- [ ] Select a hosting service.
-- [ ] Deploy the production build.
+- [x] Select a hosting service.
+- [x] Deploy the production build.
 - [ ] Verify every route.
 - [ ] Verify local-storage persistence.
 - [ ] Verify responsive behavior.
