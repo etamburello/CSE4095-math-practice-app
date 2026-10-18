@@ -239,4 +239,71 @@ describe("practice results", () => {
     );
     expect(duplicate).toBeNull();
   });
+
+  it("does not finish a continuous session after one answer", () => {
+    const session = createSession(
+      {
+        operations: ["addition", "subtraction"],
+        difficulty: 2,
+        sessionLength: "continuous",
+        mode: "regular",
+      },
+      "2024-01-01T00:00:00.000Z",
+    );
+    const result = buildResult(
+      {
+        session,
+        question: question(),
+        selectedAnswer: 5,
+        attempts: [],
+        mistakePatterns: [],
+        statistics: createEmptyStatistics(),
+        masteryThreshold: 3,
+      },
+      true,
+      "2024-01-01T00:01:00.000Z",
+    );
+    expect(result?.finished).toBe(false);
+    expect(result?.session.correct).toBe(1);
+    expect(result?.session.attempted).toBe(1);
+  });
+
+  it("updates the original mistake pattern during review until it is mastered", () => {
+    const review = question({
+      id: "review-1",
+      source: "mistake-review",
+      mistakePatternId: "pattern-1",
+      firstOperand: 8,
+      secondOperand: 7,
+      correctAnswer: 56,
+      operation: "multiplication",
+      difficulty: 2,
+    });
+    const started = pattern({ similarCorrectCount: 2 });
+    const first = buildResult(
+      {
+        session: createSession(
+          {
+            operations: ["multiplication"],
+            difficulty: 2,
+            sessionLength: 5,
+            mode: "mistake-review",
+          },
+          "2024-01-01T00:00:00.000Z",
+        ),
+        question: review,
+        selectedAnswer: 56,
+        attempts: [],
+        mistakePatterns: [started],
+        statistics: createEmptyStatistics(),
+        masteryThreshold: 3,
+      },
+      true,
+      "2024-01-01T00:01:00.000Z",
+    );
+    expect(first?.mistakePatterns).toHaveLength(1);
+    expect(first?.mistakePatterns[0]?.mastered).toBe(true);
+    expect(first?.mistakePatterns[0]?.similarCorrectCount).toBe(3);
+    expect(first?.statistics.correct).toBe(1);
+  });
 });

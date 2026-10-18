@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { generateChoices } from "../services/distractors";
-import { generateQuestion } from "../services/questionGenerator";
+import { calculateAnswer, isValidDivision, isValidMultiplication } from "../services/difficulty";
+import { generateQuestion, generateQuestionForOperations } from "../services/questionGenerator";
 import { DIFFICULTY_LEVELS, MATH_OPERATIONS } from "../types/question";
 import { isValidQuestion } from "../utils/validation";
 
@@ -83,6 +84,53 @@ describe("question generation", () => {
           true,
         );
       }
+    }
+  });
+
+  it("mixes selected operations instead of staying on one", () => {
+    const seen = new Set(
+      Array.from(
+        { length: 40 },
+        () =>
+          generateQuestionForOperations(
+            ["addition", "subtraction", "multiplication", "division"],
+            2,
+          ).operation,
+      ),
+    );
+    expect(seen.size).toBeGreaterThan(1);
+  });
+
+  it("keeps subtraction, multiplication, and division inside each level", () => {
+    for (const difficulty of DIFFICULTY_LEVELS) {
+      for (let index = 0; index < 30; index += 1) {
+        const subtraction = generateQuestion("subtraction", difficulty);
+        expect(subtraction.correctAnswer).toBe(
+          calculateAnswer("subtraction", subtraction.firstOperand, subtraction.secondOperand),
+        );
+        const multiplication = generateQuestion("multiplication", difficulty);
+        expect(
+          isValidMultiplication(
+            multiplication.firstOperand,
+            multiplication.secondOperand,
+            difficulty,
+          ),
+        ).toBe(true);
+        const division = generateQuestion("division", difficulty);
+        expect(isValidDivision(division.firstOperand, division.secondOperand, difficulty)).toBe(
+          true,
+        );
+      }
+    }
+  });
+
+  it("uses larger whole-number dividends for advanced division", () => {
+    for (let index = 0; index < 30; index += 1) {
+      const question = generateQuestion("division", 4);
+      expect(question.firstOperand).toBeGreaterThan(144);
+      expect(question.firstOperand).toBeLessThanOrEqual(2500);
+      expect(question.secondOperand).toBeGreaterThanOrEqual(2);
+      expect(question.secondOperand).toBeLessThanOrEqual(30);
     }
   });
 
