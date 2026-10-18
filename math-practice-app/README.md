@@ -1,12 +1,17 @@
 # Math Practice
 
-A browser app that helps children practice addition, subtraction, multiplication, and division.
+Practice addition, subtraction, multiplication, and division in the browser. No account is required. Practice data stays on this device.
 
 ```bash
 npm install
 npm run dev
-npm test
-npm run build
 ```
 
-Practice data stays in the browser. No account is required.
+Open the local Vite URL (usually `http://localhost:5173/`).
+
+```bash
+npm test
+npm run lint
+npm run build
+npm run preview
+```

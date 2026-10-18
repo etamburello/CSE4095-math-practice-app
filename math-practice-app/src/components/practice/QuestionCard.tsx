@@ -38,6 +38,7 @@ export function QuestionCard({
       onSelect={onSelect}
       onFlip={onFlip}
       hidden={animationsEnabled && isFlipped}
+      flipped={isFlipped}
     />
   );
   const back = (

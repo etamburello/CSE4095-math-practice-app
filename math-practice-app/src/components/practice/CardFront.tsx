@@ -11,6 +11,7 @@ interface CardFrontProps {
   onSelect: (choice: number) => void;
   onFlip: () => void;
   hidden?: boolean;
+  flipped?: boolean;
 }
 
 export function CardFront({
@@ -21,6 +22,7 @@ export function CardFront({
   onSelect,
   onFlip,
   hidden = false,
+  flipped = false,
 }: CardFrontProps) {
   const progressLabel =
     totalQuestions === null
@@ -56,7 +58,7 @@ export function CardFront({
         <Button
           onClick={onFlip}
           disabled={selectedAnswer === null}
-          aria-expanded={false}
+          aria-expanded={flipped}
           aria-controls="card-back"
         >
           Flip Card

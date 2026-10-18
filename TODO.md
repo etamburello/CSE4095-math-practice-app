@@ -798,11 +798,11 @@ Initial routes:
 ### 81. Complete Integration Tests
 
 - [x] Test a full addition session.
-- [ ] Test a mixed-operation session.
-- [ ] Test continuous practice.
+- [x] Test a mixed-operation session.
+- [x] Test continuous practice.
 - [x] Test an incorrect answer creating a mistake pattern.
 - [x] Test mistake-review generation.
-- [ ] Test mastery completion.
+- [x] Test mastery completion.
 - [x] Test persistence after a browser refresh.
 - [x] Test resetting statistics.
 
