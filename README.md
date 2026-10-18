@@ -37,6 +37,8 @@ Clearing this browser's site data erases progress.
 
 ## Deploy
 
+The live app is at [https://cse4095-math-practice-app.netlify.app/](https://cse4095-math-practice-app.netlify.app/).
+
 The production build is a static Vite app. Hosts such as Netlify need a single-page-app fallback so routes like `/statistics` still load after a refresh.
 
 From this repository root, Netlify uses `netlify.toml`:
@@ -46,15 +48,10 @@ From this repository root, Netlify uses `netlify.toml`:
 - Publish directory: `dist`
 - Redirect: missing paths serve `index.html`
 
-The earlier Drop URL (`https://melodious-halva-425d6f.netlify.app/`) is **suspended**. Unclaimed anonymous Netlify sites are password-gated and then taken down after about an hour.
-
-To publish a lasting public site, log in and deploy from `math-practice-app`:
+To publish an update after logging in:
 
 ```bash
 cd math-practice-app
 npm run build
-npx netlify-cli login
 npx netlify-cli deploy --dir=dist --prod
 ```
-
-In the Netlify project settings, set visitor access to **Public** so the URL opens without a password. Then replace this section with that `*.netlify.app` address.
